@@ -4,17 +4,22 @@ pragma solidity ^0.8.0;
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 
-contract AsphaltMotoToken is ERC20, Ownable {
+contract AsphaltMoto is ERC20, Ownable {
+// itemsId to its cost
+    mapping(uint256 => uint256) public itemCosts; 
+    // user add to the mapping of the items that use holds
+    // 1 => 2 quantity of itemId 3 
+    // 1-> ( 3 ->2 ) 
+    mapping(address => mapping(uint256 => uint256)) public userItems; 
 
-   constructor() Ownable(msg.sender) ERC20("AsphaltMotoToken", "AMOTO") {
-    _mint(msg.sender, 10000 * 10**18); 
+    constructor() Ownable(msg.sender) ERC20("DegenToken", "dtc") {
+        _mint(msg.sender, 10 * 10**3); 
     }
 
-    event TokensMinted(address indexed to, uint256 amount);
-    event TokensTransferred(address indexed from, address indexed to, uint256 amount);
-    event TokensRedeemed(address indexed from, uint256 amount);
-    event TokensBurned(address indexed from, uint256 amount);
-
+    event TokensMinted(address to, uint256 amount);
+    event TokensTransferred(address from, address to, uint256 amount);
+    event TokensRedeemed(address from, uint256 itemId, uint256 amount);
+    event TokensBurned(address from, uint256 amount);
 
     modifier validAmount(uint256 amount) {
         require(amount > 0, "Amount must be greater than 0");
@@ -32,9 +37,11 @@ contract AsphaltMotoToken is ERC20, Ownable {
         emit TokensTransferred(msg.sender, to, amount);
     }
 
-    function redeemTokens(uint256 amount) external validAmount(amount) {
-        _burn(msg.sender, amount);
-        emit TokensRedeemed(msg.sender, amount);
+    function redeemTokens(uint256 itemId) external validAmount(itemCosts[itemId]) {
+        uint256 cost = itemCosts[itemId];
+        _burn(msg.sender, cost);
+        userItems[msg.sender][itemId]++;
+        emit TokensRedeemed(msg.sender, itemId, cost);
     }
 
     function checkBalance(address account) external view returns (uint256) {
@@ -44,5 +51,9 @@ contract AsphaltMotoToken is ERC20, Ownable {
     function burnTokens(uint256 amount) external validAmount(amount) {
         _burn(msg.sender, amount);
         emit TokensBurned(msg.sender, amount);
+    }
+
+    function setRedeemableItemCost(uint256 itemId, uint256 cost) external onlyOwner {
+        itemCosts[itemId] = cost;
     }
 }
