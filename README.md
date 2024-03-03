@@ -1,17 +1,22 @@
-# AsphaltMotoToken
+# AsphaltMoto ERC20 Token Contract
 
-AsphaltMotoToken is an ERC-20 token implemented on the Ethereum blockchain. It is designed to be used in the context of a decentralized application (dApp) for managing and transferring tokens.
+This Solidity smart contract implements the AsphaltMoto ERC20 token, named "DegenToken" with the symbol "dtc". It is designed to be owned by an address that can control minting and set redeemable item costs. The contract also includes functionalities for transferring tokens, redeeming items, checking balances, and burning tokens.
 
-## Introduction
+## Features
 
-This Ethereum smart contract, AsphaltMotoToken, is an ERC-20 token that extends the functionality of the OpenZeppelin ERC20 and Ownable contracts. It provides basic token operations such as minting, transferring, redeeming, and burning, while also ensuring ownership control.
+- Minting tokens by the owner.
+- Transferring tokens between addresses.
+- Redeeming items using tokens.
+- Burning tokens.
+- Setting redeemable item costs.
 
-## Token Information
+## Contract Details
 
-- **Name**: AsphaltMotoToken
-- **Symbol**: AMOTO
-- **Decimals**: 18
-- **Total Supply**: 10,000 AMOTO
+- **Token Name:** DegenToken
+- **Token Symbol:** dtc
+- **Decimals:** 18
+- **Initial Supply:** 10,000 tokens
+
 
 ## Contract Features
 
